@@ -10,7 +10,7 @@ if(!class_exists('WPFY_Slider_Settings')){
         }
 
         public function admin_init(){
-            register_setting( 'wpfy_slider_settings_group', 'wpfy_slider_options');
+            register_setting( 'wpfy_slider_settings_group', 'wpfy_slider_options', array($this, 'wpfy_slider_validate'));
 
             add_settings_section( 'wpfy_slider_main_section', 'How does it work?', null, 'wpfy_slider_page1');
             add_settings_field( 'wpfy_slider_shortcode', 'Shortcode', array($this, 'wpfy_slider_shortcode_cb'), 'wpfy_slider_page1', 'wpfy_slider_main_section');
@@ -33,9 +33,43 @@ if(!class_exists('WPFY_Slider_Settings')){
                     'items'=>array(
                         'style-1',
                         'style-2'
-                    )
+                    ),
+                    'label_for' => 'wpfy_slider_style'
                 )
             );
+        }
+
+        //Sanitize data before saving into DB
+        public function wpfy_slider_validate($input){
+            //Declare a new empty array
+            $new_input = array();
+
+            //Loop through all fields by their key and value. Insert each value by their key in a new array with sanitized value
+            foreach($input as $key => $value){
+                $new_input[$key] = sanitize_text_field( $value );
+
+
+                //If there need to sanitize fields by their type
+                // switch($key){
+                //     case 'wpfy_slider_title';
+                //     $new_input[$key] = sanitize_text_field( $value );
+                //     break;
+
+                //     case 'wpfy_slider_url';
+                //     $new_input[$key] = esc_url_raw( $value );
+                //     break;
+
+                //     case 'wpfy_slider_int';
+                //     $new_input[$key] = absint( $value );
+                //     break;
+
+                //     default:
+                //     $new_input[$key] = sanitize_text_field( $value );
+                //     break;
+                // }
+            }
+
+            return $new_input;
         }
 
         public function wpfy_slider_style_cb($args){
