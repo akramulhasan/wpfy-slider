@@ -23,16 +23,31 @@ if(!class_exists('WPFY_Slider_Settings')){
             add_settings_field( 'wpfy_slider_bullets', 'Display Bullets', array($this, 'wpfy_slider_bullet_cb'), 'wpfy_slider_page2', 'wpfy_slider_second_section');
 
             //Second Section Fourth Field
-            add_settings_field( 'wpfy_slider_style', 'Slider Style', array($this, 'wpfy_slider_style_cb'), 'wpfy_slider_page2', 'wpfy_slider_second_section');
+            add_settings_field( 
+                'wpfy_slider_style', 
+                'Slider Style', 
+                array($this, 'wpfy_slider_style_cb'), 
+                'wpfy_slider_page2', 
+                'wpfy_slider_second_section', 
+                array(
+                    'items'=>array(
+                        'style-1',
+                        'style-2'
+                    )
+                )
+            );
         }
 
-        public function wpfy_slider_style_cb(){
+        public function wpfy_slider_style_cb($args){
+
+            
             ?>
                 <select id="wpfy_slider_style" name="wpfy_slider_options[wpfy_slider_style]">
-                    <option value="style-1" 
-                    <?php echo isset(self::$options['wpfy_slider_style']) ? selected('style-1', self::$options['wpfy_slider_style'], true)  : '' ?> >Style 1</option>
-
-                    <option value="style-2" <?php echo isset(self::$options['wpfy_slider_style']) ? selected('style-2', self::$options['wpfy_slider_style']) : '' ?> >Style 2</option>
+                    <?php foreach($args['items'] as $item) : ?>
+                        <option value="<?php echo esc_attr($item); ?>" <?php echo isset(self::$options['wpfy_slider_style']) ? selected($item, self::$options['wpfy_slider_style']) : '' ?> ><?php echo esc_html($item); ?></option>
+                    <?php endforeach; ?>
+                   
+  
                 </select>
             <?php
         }
