@@ -28,6 +28,17 @@ if(! class_exists('WPFY_Slider_Post_Type')){
 
         //add_menu cb
         public function wpfy_slider_settings_page(){
+
+            //Check user has the proper Capability
+            if(!current_user_can('manage_options')){
+                return;
+            }
+
+            //Set Success or Error message
+            if(isset($_GET['settings-updated'])){
+                add_settings_error('wpfy_slider_options', 'wpfy_slider_message', 'Settings Saved', 'success');
+            }
+            settings_errors('wpfy_slider_options');
             require(WPFY_SLIDER_PATH.'views/settings-page.php');
         }
         public function make_sortable_columns($columns){
