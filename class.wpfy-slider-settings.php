@@ -46,27 +46,33 @@ if(!class_exists('WPFY_Slider_Settings')){
 
             //Loop through all fields by their key and value. Insert each value by their key in a new array with sanitized value
             foreach($input as $key => $value){
-                $new_input[$key] = sanitize_text_field( $value );
+
+                //Generalise the sanitization for all fields.
+                //$new_input[$key] = sanitize_text_field( $value );
 
 
                 //If there need to sanitize fields by their type
-                // switch($key){
-                //     case 'wpfy_slider_title';
-                //     $new_input[$key] = sanitize_text_field( $value );
-                //     break;
+                switch($key){
+                    case 'wpfy_slider_title';
+                    if(empty($value)){
+                        add_settings_error( 'wpfy_slider_options', 'wpfy_slider_message', 'Title filed cant left empty', 'error' );
+                        $value = 'Please, type some text';
+                    }
+                    $new_input[$key] = sanitize_text_field( $value );
+                    break;
 
-                //     case 'wpfy_slider_url';
-                //     $new_input[$key] = esc_url_raw( $value );
-                //     break;
+                    case 'wpfy_slider_url';
+                    $new_input[$key] = esc_url_raw( $value );
+                    break;
 
-                //     case 'wpfy_slider_int';
-                //     $new_input[$key] = absint( $value );
-                //     break;
+                    case 'wpfy_slider_int';
+                    $new_input[$key] = absint( $value );
+                    break;
 
-                //     default:
-                //     $new_input[$key] = sanitize_text_field( $value );
-                //     break;
-                // }
+                    default:
+                    $new_input[$key] = sanitize_text_field( $value );
+                    break;
+                }
             }
 
             return $new_input;
