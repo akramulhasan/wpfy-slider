@@ -29,6 +29,10 @@ if( ! class_exists( 'WPFY_Slider' ) ){
     class WPFY_Slider {
         function __construct(){
             $this->define_constants();
+
+            require_once(WPFY_SLIDER_PATH . '/post-types/class.wpfy-slider-cpt.php');
+
+            $wpfy_slider_cpt = new WPFY_SLIDER_CPT();
         }
 
         function define_constants(){
