@@ -46,20 +46,37 @@ if(!class_exists('WPFY_SLIDER_CPT')){
             );
         }
 
+
         public function add_inner_beta_boxes($post){
             require_once(WPFY_SLIDER_PATH . 'views/wpfy-slider-metabox.php');
         }
 
         public function save_post($post_id){
-            //if( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ){
+            if( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ){
                 $old_link_text = get_post_meta($post_id, 'wpfy_slider_link_text', true);
                 $new_link_text = $_POST['wpfy_slider_link_text'];
                 $old_link_url = get_post_meta($post_id, 'wpfy_slider_link_url', true);
                 $new_link_url = $_POST['wpfy_slider_link_url'];
 
-                update_post_meta( $post_id, 'wpfy_slider_link_text', $new_link_text, $old_link_text );
-                update_post_meta( $post_id, 'wpfy_slider_link_url', $new_link_url, $old_link_url );
-            //}
+                if( empty( $new_link_text ) ){
+
+                    update_post_meta( $post_id, 'wpfy_slider_link_text', 'Button Label', $old_link_text );
+
+                } else {
+
+                    update_post_meta( $post_id, 'wpfy_slider_link_text', sanitize_text_field( $new_link_text ), $old_link_text );
+                }
+
+                if( empty( $new_link_url ) ){
+
+                    update_post_meta( $post_id, 'wpfy_slider_link_url', '#', $old_link_url );
+
+                }else{
+
+                    update_post_meta( $post_id, 'wpfy_slider_link_url', sanitize_text_field( $new_link_url ), $old_link_url );
+                }
+                
+            }
         }
 
     }
