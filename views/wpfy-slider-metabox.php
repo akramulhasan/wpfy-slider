@@ -5,7 +5,8 @@
 
 ?>
 
-<table class="form-table mv-slider-metabox"> 
+<table class="form-table mv-slider-metabox">
+    <input type="hidden" name="wpfy_slider_nonce" value="<?php echo wp_create_nonce( 'wpfy_slider_nonce' ); ?>">
     <tr>
         <th>
             <label for="wpfy_slider_link_text">Link Text</label>
