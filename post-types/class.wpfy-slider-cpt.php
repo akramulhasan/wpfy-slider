@@ -6,6 +6,30 @@ if(!class_exists('WPFY_SLIDER_CPT')){
             add_action('init', array($this, 'create_slider_post_type'));
             add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
             add_action('save_post', array($this, 'save_post'), 10, 2);
+            add_filter( 'manage_wpfy-slider_posts_columns', array($this, 'wpfy_slider_cpt_columns') );
+            add_action( 'manage_wpfy-slider_posts_custom_column', array($this, 'wpfy_slider_cpt_custom_column'), 10, 2 );
+        }
+
+
+        //method for creating the column heading
+        public function wpfy_slider_cpt_columns( $columns ){
+            $columns['wpfy_slider_text'] = esc_html__( 'Link Text', 'wpfy-slider' );
+            $columns['wpfy_slider_url'] = esc_html__('Link URL', 'wpfy-slider');
+
+            return $columns;
+        }
+
+        //method for creating custom column values
+        public function wpfy_slider_cpt_custom_column($column, $post_id){
+            switch( $column ){
+                case 'wpfy_slider_text':
+                    echo esc_html( get_post_meta( $post_id, 'wpfy_slider_link_text', true ));
+                    break;
+
+                case 'wpfy_slider_url':
+                    echo esc_html( get_post_meta( $post_id, 'wpfy_slider_link_url', true ));
+                    break;
+            }
         }
 
         public function create_slider_post_type(){
