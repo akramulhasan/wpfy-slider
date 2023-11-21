@@ -30,8 +30,10 @@ if( ! class_exists( 'WPFY_Slider' ) ){
         function __construct(){
             $this->define_constants();
 
-            require_once(WPFY_SLIDER_PATH . '/post-types/class.wpfy-slider-cpt.php');
+            add_action('admin_menu', array($this, 'add_menu'));
 
+            //include the CPT Class and instantiate
+            require_once(WPFY_SLIDER_PATH . '/post-types/class.wpfy-slider-cpt.php');
             $wpfy_slider_cpt = new WPFY_SLIDER_CPT();
         }
 
@@ -50,6 +52,17 @@ if( ! class_exists( 'WPFY_Slider' ) ){
         }
         public static function uninstall(){
 
+        }
+
+        //method for add_menu
+
+        public function add_menu(){
+            add_menu_page( 'WPFY Slider Options', 'WPFY Slider Settings', 'manage_options', 'wpfy-slider-options', array($this,'wpfy_slier_settings_page'), 'dashicons-images-alt2', 10 );
+        }
+
+        //slider menu callback
+        public function wpfy_slier_settings_page(){
+            echo 'Show some settings of the slider';
         }
     }
 }
