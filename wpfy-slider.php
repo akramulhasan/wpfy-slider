@@ -30,6 +30,7 @@ if( ! class_exists( 'WPFY_Slider' ) ){
         function __construct(){
             $this->define_constants();
 
+            //adding admin menu for slider settings
             add_action('admin_menu', array($this, 'add_menu'));
 
             //include the CPT Class and instantiate
@@ -57,12 +58,22 @@ if( ! class_exists( 'WPFY_Slider' ) ){
         //method for add_menu
 
         public function add_menu(){
-            add_menu_page( 'WPFY Slider Options', 'WPFY Slider Settings', 'manage_options', 'wpfy-slider-options', array($this,'wpfy_slier_settings_page'), 'dashicons-images-alt2', 10 );
+            add_menu_page( 'WPFY Slider Options', 'WPFY Slider Settings', 'manage_options', 'wpfy-slider-options', array($this,'wpfy_slier_settings_page'), 'dashicons-images-alt2');
+
+            //add submenu Manage S
+            add_submenu_page( 'wpfy-slider-options', 'Manage Slides', 'Manage Slide', 'manage_options', 'edit.php?post_type=wpfy-slider',null , null );
+
+            //add submenu Add New slide
+            add_submenu_page( 'wpfy-slider-options', 'Add New', 'Add New', 'manage_options', 'post-new.php?post_type=wpfy-slider',null , null );
         }
 
         //slider menu callback
         public function wpfy_slier_settings_page(){
             echo 'Show some settings of the slider';
+        }
+
+        public function slider_sub_menu_manage(){
+            echo 'This is submenu';
         }
     }
 }
